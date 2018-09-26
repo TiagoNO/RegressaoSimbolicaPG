@@ -1,40 +1,54 @@
 import random
 
 num_operations = 4
-random.seed()
+
+SUM_OP = 0
+SUB_OP = 1
+MUL_OP = 2
+DIV_OP = 3
+LOG_OP = 4
+POW_OP = 5
+SQRT_OP = 6
+SIN_OP = 7
+COS_OP = 8
+ABS_OP = 9
 
 def get_random_operation():
-    operation_selected = random.randint(1,num_operations)
+    operation_selected = random.randint(0,num_operations - 1)
 
-    if operation_selected == 1:
+    if operation_selected == SUM_OP:
         return Operation_sum()
-    elif operation_selected == 2:
+    elif operation_selected == SUB_OP:
         return Operation_sub()
-    elif operation_selected == 3:
+    elif operation_selected == MUL_OP:
         return Operation_mul()
-    elif operation_selected == 4:
+    elif operation_selected == DIV_OP:
         return Operation_div()
     else:
         return Operation_sum()
 
 def get_operation(operation_id):
-    if operation_id == 1:
+    if operation_id == SUM_OP:
         return Operation_sum()
-    elif operation_id == 2:
+    elif operation_id == SUB_OP:
         return Operation_sub()
-    elif operation_id == 3:
+    elif operation_id == MUL_OP:
         return Operation_mul()
-    elif operation_id == 4:
+    elif operation_id == DIV_OP:
         return Operation_div()
     else:
         return Operation_sum()  
+
+def rand_operation_id():
+    return random.randint(1,num_operations)
+
 
 class Operation:
 
     def do_operation(self,values):
         print "Doing operation..."
 
-class Operation_sum( Operation ):
+class Operation_sum ( Operation ):
 
     def do_operation(self,values):
         result = values[0] + values[1]
@@ -57,35 +71,3 @@ class Operation_div ( Operation ):
     def do_operation(self,values):
         result = values[0] / values[1]
         return result
-
-class Value ( Operation ):
-
-    def __init__(self,value):
-        self.value = value
-
-    def do_operation(self):
-        return self.value
-
-class Tree_node:
-
-    def __init__(self):
-        self.left = None
-        self.right = None
-        self.operation = None
-        print "initializating tree node!"
-
-class Operation_node( Tree_node ):
-
-    def __init__(self,operation_id):
-        self.left = None
-        self.right = None
-        self.operation = 
-        print "Initializating operation node!"
-
-class Variable_node( Tree_node ):
-
-    def __init__(self,value):
-        self.left = None
-        self.right = None
-        self.operation = None
-        print "Initializating variable node!"
