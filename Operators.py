@@ -69,5 +69,8 @@ class Operation_mul ( Operation ):
 class Operation_div ( Operation ):
 
     def do_operation(self,values):
-        result = values[0] / values[1]
-        return result
+        if values[1] != 0:
+            result = values[0] / values[1]
+            return result
+        else:
+            return 0

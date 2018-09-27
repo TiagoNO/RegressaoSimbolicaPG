@@ -51,14 +51,14 @@ class Operation_node( Tree_node ):
         if self.right != None:
             self.right.printk()
 
-    def get_value(self):
+    def get_value(self,variable_values):
         left_value = 0.0
         right_value = 0.0
 
         if self.left != None:
-            right_value = self.left.get_value()
+            right_value = self.left.get_value(variable_values)
         if self.right != None:
-            left_value = self.right.get_value()
+            left_value = self.right.get_value(variable_values)
 
         return self.operation.do_operation((left_value,right_value))
 
@@ -88,6 +88,6 @@ class Const_node( Tree_node ):
     def printk(self):
         print str(self.type) + "|",
 
-    def get_value(self):
+    def get_value(self,variable_values):
         return self.value
 
