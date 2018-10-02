@@ -1,12 +1,45 @@
-from Individual import *
+import genetics
+from data_reader import DataReader
+import random
+import sys
 
-x_values = [[1],[2],[3],[4],[5],[6],[7],[8],[9]]
-y_values = [[2],[3],[4],[5],[6],[7],[8],[9],[10]]
+def avarege(fitness_values):
+    min_fit = float("inf")
+    max_fit = float("-inf")
+    avarege = 0.0
+    for i in fitness_values:
+        if min_fit > i:
+            min_fit = i
+        if max_fit < i:
+            max_fit = i
+        avarege += i
+    return (max_fit,min_fit,avarege/(len(fitness_values) + 1))
 
-initial_population = generate_random_population(100,1)
+sys.setrecursionlimit(999999)
 
-#for i in xrange(len(initial_population)):
-#    print i,initial_population[i].printk(),"\n\n"
+random.seed()
 
-fitness_values = eval_population(initial_population,x_values,y_values)
+data = DataReader("concrete-test.csv")
+data.read_data()
 
+x_values = data.get_x_values()
+y_values = data.get_y_values()
+num_variables = data.get_num_variables()
+
+
+population = genetics.generate_random_population(10,num_variables)
+
+print "---------------------"
+for i in xrange(0,1001):
+    fitness_values = genetics.eval_population(population,x_values,y_values)
+    statics = avarege(fitness_values)
+    if i%20 == 0:
+        print "============={}==================".format(i)
+        print "Population size:",len(population)
+        print "Population:"
+        for i in xrange(len(population)):
+            print i,population[i].get_depht()
+        print "End Population"
+        print "Max:{}\nMin:{}\nAvarege:{}".format(statics[0],statics[1],statics[2])
+        print "================================"
+    population = genetics.select_population(population,fitness_values,x_values,y_values)
