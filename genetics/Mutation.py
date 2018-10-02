@@ -12,7 +12,8 @@ def mutate_individual(individual,num_variables):
     node = select_random_node(individual,individual.level)
     if random.randint(0,1):
         if node[0].left is node[1]:
-            node[0].left = generate_random_individual(num_variables,False,MAX_LEVEL - node[0].level)
+            del node[0].left
+            node[0].left = generate_random_individual(num_variables,False,node[0].level + 1,MAX_LEVEL - node[1].level - 1)
         else:
-            node[0].left = generate_random_individual(num_variables,False,MAX_LEVEL - node[0].level)
-    node[1].recalculate_level(node[0].level)
+            del node[0].right
+            node[0].right = generate_random_individual(num_variables,False,node[0].level + 1,MAX_LEVEL - node[1].level - 1)    

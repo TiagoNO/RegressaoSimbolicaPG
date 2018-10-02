@@ -6,26 +6,15 @@ from Mutation import *
 from Tree import get_child_nodes,select_random_node,get_copy,linearize_tree
 from Individual import eval_population
 
-def get_valid_node(B,node_chosen):
-    for i in B:
-        if i[0].get_depht() > MAX_LEVEL - node_chosen.get_depht():# or i[0].level > MAX_LEVEL - node_chosen.level:
-            B.remove(i)
-
-    return B[random.randint(0,len(B)) - 1]
-
 def cross_over(parents):
     if len(parents) == 1:
         return [parents[0][0]]
     child_A = get_copy(parents[0][0])
     child_B = get_copy(parents[1][0])
-#    child_A = copy.deepcopy(parents[0][0])
-#    child_B = copy.deepcopy(parents[1][0])
 
-    node_A = linearize_tree(child_A)
-    node_B = linearize_tree(child_B)
+    node_A = select_random_node(child_A,0)
+    node_B = select_random_node(child_B,node_A[0].get_depht())
 
-    node_A = node_A[random.randint(0,len(node_A) - 1)]
-    node_B = get_valid_node(node_B,node_A[1])
 
     if node_A[0].left is node_A[1]:
         node_A[0].left = node_B[1]
@@ -37,11 +26,8 @@ def cross_over(parents):
     else:
         node_B[0].right = node_A[1]
 
-#    child_A.recalculate_level(0)
-#    child_B.recalculate_level(0)
-#    print "[A] Filho:",child_A
-#    print "[B] Filho:",child_B
-#    print "====================================="
+    child_A.recalculate_level(1)
+    child_B.recalculate_level(1)
 
     return [child_A,child_B]
     
@@ -70,6 +56,7 @@ def compare_family(parents,children,x_values,y_values):
 
         if better_than_parents(parents,child_avaliated_fitness):
             who_pass.append(child_avaliated)
+            del child_avaliated
         else:
             index = get_best_parent_index(parents)
             who_pass.append(parents.pop(index)[0])
@@ -106,15 +93,11 @@ def generate_children(population,x_values,y_values):
     for i in parents:
         mutation_chance = random.random()
         if mutation_chance <= MUTATION_RATE:
-#            print "CROSS-OVER: False"
-#            print "MUTATION: True"
             children = get_mutated_children(i,x_values)
-            new_population += children
+            new_population += compare_family(i,children,x_values,y_values)
         else:
-#            print "CROSS-OVER: True"
-#            print "MUTATION: False"
             children = cross_over(i)
-            new_population += children
+            new_population += compare_family(i,children,x_values,y_values)
     return new_population
 
 def run_tournament(group):

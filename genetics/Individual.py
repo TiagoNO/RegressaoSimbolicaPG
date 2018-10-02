@@ -12,9 +12,9 @@ def generate_random_population(num_ind,num_variables):
             initial_population.append(generate_random_individual(num_variables,False))
     return initial_population
 
-def generate_random_individual(num_variables,full,max_tree_level=MAX_LEVEL):
+def generate_random_individual(num_variables,full,initial_level=1,max_tree_level=MAX_LEVEL):
     random.seed()
-    root = get_random_node(num_variables,1)
+    root = get_random_node(num_variables,initial_level)
     max_depht = 0
     stack = [root]
     while len(stack) > 0:

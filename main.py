@@ -13,13 +13,13 @@ def avarege(fitness_values):
         if max_fit < i:
             max_fit = i
         avarege += i
-    return (max_fit,min_fit,avarege/(len(fitness_values) + 1))
+    return (max_fit,min_fit,avarege/(len(fitness_values)))
 
 sys.setrecursionlimit(999999)
 
 random.seed()
 
-data = DataReader("concrete-test.csv")
+data = DataReader("datasets/concrete/concrete-test.csv")
 data.read_data()
 
 x_values = data.get_x_values()
@@ -27,7 +27,7 @@ y_values = data.get_y_values()
 num_variables = data.get_num_variables()
 
 
-population = genetics.generate_random_population(10,num_variables)
+population = genetics.generate_random_population(20,num_variables)
 
 print "---------------------"
 for i in xrange(0,1001):
@@ -38,7 +38,8 @@ for i in xrange(0,1001):
         print "Population size:",len(population)
         print "Population:"
         for i in xrange(len(population)):
-            print i,population[i].get_depht()
+#            if population[i].get_depht() > genetics.MAX_LEVEL:
+                print i,population[i].get_depht()#population[i],
         print "End Population"
         print "Max:{}\nMin:{}\nAvarege:{}".format(statics[0],statics[1],statics[2])
         print "================================"

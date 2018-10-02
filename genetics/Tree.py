@@ -24,11 +24,11 @@ class Operation_node( Tree_node ):
         self.level = level            
 
     def recalculate_level(self,level):
-        self.level = level + 1
+        self.level = level
         if self.right != None:
-            self.right.recalculate_level(self.level)
+            self.right.recalculate_level(self.level+1)
         if self.left != None:
-            self.left.recalculate_level(self.level)
+            self.left.recalculate_level(self.level+1)
 
     def get_depht(self):
         right_depht = 0
@@ -41,9 +41,9 @@ class Operation_node( Tree_node ):
 
     def __str__(self):
         if self.operation.get_num_op() == 1:
-            return self.operation.string_representation().format(str(self.left))
+            return "[{}]".format(self.level) + " " + self.operation.string_representation().format(str(self.left))
         else:
-            return self.operation.string_representation().format(str(self.left),str(self.right))
+            return "[{}]".format(self.level) + " " + self.operation.string_representation().format(str(self.left),str(self.right))
 
     def get_value(self,variable_values):
         left_value = 0.0
@@ -76,13 +76,13 @@ class Variable_node( Tree_node ):
         return MAX_LEVEL - self.level
 
     def recalculate_level(self,level):
-        self.level = level + 1
+        self.level = level
 
     def get_depht(self):
         return 0.0
 
     def __str__(self):
-        return "x" + str(self.num_variable)
+        return "[{}]".format(self.level)  + " " +  "x" + str(self.num_variable)
 
     def get_value(self,variables_values):
         return variables_values[self.num_variable - 1]
@@ -103,13 +103,13 @@ class Const_node( Tree_node ):
         return MAX_LEVEL - self.level
 
     def recalculate_level(self,level):
-        self.level = level + 1
+        self.level = level
 
     def get_depht(self):
         return 0.0
 
     def __str__(self):
-        return str(self.value)
+        return "[{}]".format(self.level) + " " + str(self.value)
 
     def get_value(self,variable_values):
         return self.value
@@ -173,24 +173,28 @@ def get_copy(tree):
         new_tree.right = None
         return new_tree
 
-def select_random_node(node,level=0):
+def select_random_node(node,level=0,min_level=0,max_depht=MAX_LEVEL):
     iterator = node
     parent = node
     while 1:
-        if iterator.level + 1 > MAX_LEVEL - level:
+        if  iterator.get_depht() < max_depht and iterator.level + 1 > MAX_LEVEL - level:
             return (parent,iterator)
 
-        if random.random() <= float(1)/float(MAX_LEVEL - level):
+        if  iterator.get_depht() < max_depht and random.random() <= float(level)/float(MAX_LEVEL):
             return (parent,iterator)
 
         if iterator.left == None and iterator.right == None:
             return (parent,iterator)
 
         if iterator.left == None:
-            return (iterator,iterator.right)
+            parent = iterator
+            iterator = iterator.right
+            continue
 
         elif iterator.right == None:
-            return (iterator,iterator.left)
+            parent = iterator
+            iterator = iterator.left
+            continue
 
         else:
             left_side = random.randint(0,1)
@@ -200,6 +204,7 @@ def select_random_node(node,level=0):
             else:
                 parent = iterator
                 iterator = iterator.right
+            continue
 
 
 def linearize_tree(individual):
