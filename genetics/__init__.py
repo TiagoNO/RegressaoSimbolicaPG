@@ -31,6 +31,7 @@ class Genetics:
 
     def run_genetic(self,x_values,y_values):
         if self.population == None:
+            
             raise EmptyPopulation()
         else:
             for i in xrange(Configuration.get_num_generations()):
