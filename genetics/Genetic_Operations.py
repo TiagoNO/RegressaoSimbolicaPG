@@ -13,7 +13,11 @@ def cross_over(parents):
     child_B = get_copy(parents[1][0])
 
     node_A = select_random_node(child_A,0)
-    node_B = select_random_node(child_B,node_A[0].get_depht())
+    node_B = select_random_node(child_B,0)
+    #print "//////////////////"
+    #print "Node A:",node_A[1],node_A[1].level,node_A[1].get_depht()
+    #print "Node B:",node_B[1],node_A[1].level,node_B[1].get_depht()
+    #print "//////////////////"
 
 
     if node_A[0].left is node_A[1]:

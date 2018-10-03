@@ -177,24 +177,23 @@ def select_random_node(node,level=0,min_level=0,max_depht=MAX_LEVEL):
     iterator = node
     parent = node
     while 1:
+        
         if  iterator.get_depht() < max_depht and iterator.level + 1 > MAX_LEVEL - level:
             return (parent,iterator)
 
-        if  iterator.get_depht() < max_depht and random.random() <= float(level)/float(MAX_LEVEL):
+        elif  iterator.get_depht() < max_depht and random.random() <= float(level)/float(MAX_LEVEL):
             return (parent,iterator)
 
-        if iterator.left == None and iterator.right == None:
+        elif iterator.left == None and iterator.right == None:
             return (parent,iterator)
 
-        if iterator.left == None:
+        elif iterator.left == None:
             parent = iterator
             iterator = iterator.right
-            continue
 
         elif iterator.right == None:
             parent = iterator
             iterator = iterator.left
-            continue
 
         else:
             left_side = random.randint(0,1)

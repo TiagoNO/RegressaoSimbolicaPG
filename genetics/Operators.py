@@ -129,9 +129,9 @@ class Operation_abs ( Operation ):
     def do_operation(self,values):
         return math.fabs(float(values[0]))
 
-operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()
-                    ,Operation_sqrt(),Operation_abs(),Operation_log(),Operation_cos()
-                    ,Operation_sin()]
+operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()]
+                    #,Operation_sqrt(),Operation_abs(),Operation_log(),Operation_cos()
+                    #,Operation_sin()]
 
 def get_random_operation():
     random.seed()

@@ -1,5 +1,5 @@
 #-- Operators configuration --#
-NUM_OPERATIONS = 9
+NUM_OPERATIONS = 4
 SUM_OP = 0
 SUB_OP = 1
 MUL_OP = 2

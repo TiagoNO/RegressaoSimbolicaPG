@@ -26,10 +26,9 @@ x_values = data.get_x_values()
 y_values = data.get_y_values()
 num_variables = data.get_num_variables()
 
+population = genetics.generate_random_population(10,num_variables)
 
-population = genetics.generate_random_population(20,num_variables)
 
-print "---------------------"
 for i in xrange(0,1001):
     fitness_values = genetics.eval_population(population,x_values,y_values)
     statics = avarege(fitness_values)
@@ -39,7 +38,7 @@ for i in xrange(0,1001):
         print "Population:"
         for i in xrange(len(population)):
 #            if population[i].get_depht() > genetics.MAX_LEVEL:
-                print i,population[i].get_depht()#population[i],
+                print i,population[i]#population[i],
         print "End Population"
         print "Max:{}\nMin:{}\nAvarege:{}".format(statics[0],statics[1],statics[2])
         print "================================"
