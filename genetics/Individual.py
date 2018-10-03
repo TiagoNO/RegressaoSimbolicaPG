@@ -1,63 +1,88 @@
-from Operators_config import * 
-from Tree import *
+from Configuration import Configuration
+from Tree import NodeTypes,Tree_Operations
+import numpy as np
+import random
 import math
 
-def generate_random_population(num_ind,num_variables):
-    random.seed()
-    initial_population = []
-    for i in xrange(num_ind):
-        if i >= num_ind/2:
-            initial_population.append(generate_random_individual(num_variables,True))
+class Population:
+
+    def __init__(self,population_size,num_variables,recover_file_name="no_file"):
+        if recover_file_name == "no_file":
+            self.population = self.generate_random_population(population_size,num_variables)
         else:
-            initial_population.append(generate_random_individual(num_variables,False))
-    return initial_population
+            self.population = self.recover_population(recover_file_name)
 
-def generate_random_individual(num_variables,full,initial_level=1,max_tree_level=MAX_LEVEL):
-    random.seed()
-    root = get_random_node(num_variables,initial_level)
-    max_depht = 0
-    stack = [root]
-    while len(stack) > 0:
-        node = stack.pop()
-        if node.level > max_depht:
-            max_depht = node.level
-        if node.type == OPERATION_NODE_TYPE:
-            if full:
-                node.left = get_random_full_node(num_variables,node.level+1)
-            else:
-                node.left = get_random_node(num_variables,node.level+1)                
-            stack.append(node.left)
+    def recover_population(self,recover_file_name):
+        try:
+            print "Recovering population..."
+            return []
+        except:
+            print "ERROR: Could not recover population...Random population created..."
+            self.population
 
-            if node.operation.get_num_op() == 2:
+    def update_population(self,new_population):
+        self.population = new_population
 
+    def get_population(self):
+        return self.population
+
+    @staticmethod
+    def generate_random_individual(num_variables,full,initial_level=1,max_tree_level=Configuration.get_max_tree_level()):
+        root = Tree_Operations.get_random_node(num_variables,initial_level)
+        max_depht = 0
+        stack = [root]
+        while len(stack) > 0:
+            node = stack.pop()
+            if node.level > max_depht:
+                max_depht = node.level
+            if node.type == NodeTypes.OPERATION_NODE_TYPE:
                 if full:
-                    node.right = get_random_full_node(num_variables,node.level+1)
+                    node.left = Tree_Operations.get_random_full_node(num_variables,node.level+1)
                 else:
-                    node.right = get_random_node(num_variables,node.level+1)                
-                stack.append(node.right)
+                    node.left = Tree_Operations.get_random_node(num_variables,node.level+1)                
+                stack.append(node.left)
 
-        if node.level + 1 > max_tree_level:
-            continue
-    root.max_depht = max_depht
-    return root
+                if node.operation.get_num_op() == 2:
 
-def eval_population(population,x_values,y_values):
-    fitness_values = []
-    for i in xrange(len(population)):
-        fitness_values.append(calculate_fitness(population[i],x_values,y_values))
-    return fitness_values
+                    if full:
+                        node.right = Tree_Operations.get_random_full_node(num_variables,node.level+1)
+                    else:
+                        node.right = Tree_Operations.get_random_node(num_variables,node.level+1)                
+                    stack.append(node.right)
 
-def calculate_fitness(individual,x_values,y_values):
-    A = 0.0
-    B = 0.0
-    avarege = 0.0
-    for i in xrange(len(x_values)):
-        ind_value = individual.get_value(x_values[i])
-        A += math.pow(y_values[i] - ind_value,2)
-        avarege += y_values[i]
-    avarege/len(y_values)
+            if node.level + 1 > max_tree_level:
+                continue
+        root.max_depht = max_depht
+        return root
 
-    for i in xrange(len(y_values)):
-        B += math.pow(y_values[i] - avarege,2)
+    @staticmethod
+    def generate_random_population(num_ind,num_variables):
+        initial_population = []
+        for i in xrange(num_ind):
+            if i >= num_ind/2:
+                initial_population.append(Population.generate_random_individual(num_variables,True))
+            else:
+                initial_population.append(Population.generate_random_individual(num_variables,False))
+        return initial_population
 
-    return math.sqrt(A/B)
+    @staticmethod
+    def calculate_fitness(individual,x_values,y_values):
+        A = 0.0
+        B = 0.0
+        avarege = 0.0
+
+        avarege = np.mean(y_values)
+
+        for i in xrange(len(x_values)):
+            ind_value = individual.get_value(x_values[i])
+            A += math.pow(y_values[i] - ind_value,2)
+            B += math.pow(y_values[i] - avarege,2)
+        return math.sqrt(A/B)
+
+    @staticmethod
+    def eval_population(population,x_values,y_values):
+        fitness_values = []
+        for i in xrange(len(population)):
+            fitness_values.append(Population.calculate_fitness(population[i],x_values,y_values))
+        return fitness_values
+

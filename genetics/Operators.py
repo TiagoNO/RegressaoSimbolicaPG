@@ -1,6 +1,18 @@
 import random
-from Operators_config import *
 import math
+
+class OperationTypes:
+    NUM_OPERATIONS = 4
+    SUM_OP = 0
+    SUB_OP = 1
+    MUL_OP = 2
+    DIV_OP = 3
+#    LOG_OP = 4
+#    POW_OP = 5
+#    SQRT_OP = 6
+#    SIN_OP = 7
+#    COS_OP = 8
+#    ABS_OP = 9
 
 class Operation:
 
@@ -82,17 +94,6 @@ class Operation_cos ( Operation ):
     def do_operation(self,values):
         return math.cos(float(values[0]))
 
-#class Operation_pow ( Operation ):
-#
-#    def __init__(self):
-#        self.num_operators = 2
-#
-#    def string_representation(self):
-#        return "( {} ^ {} )"
-#
-#    def do_operation(self,values):
-#        return values[0]**values[1]
-
 class Operation_sqrt ( Operation ):
 
     def __init__(self):
@@ -129,19 +130,25 @@ class Operation_abs ( Operation ):
     def do_operation(self,values):
         return math.fabs(float(values[0]))
 
-operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()]
+
+class Operations:
+
+    operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()]
                     #,Operation_sqrt(),Operation_abs(),Operation_log(),Operation_cos()
                     #,Operation_sin()]
 
-def get_random_operation():
-    random.seed()
-    operation_selected = random.randint(0,NUM_OPERATIONS - 1)
-    return operations_list[operation_selected]
+    @staticmethod
+    def get_random_operation():
+        #random.seed()
+        operation_selected = random.randint(0,OperationTypes.NUM_OPERATIONS - 1)
+        return Operations.operations_list[operation_selected]
 
-def get_operation(operation_id):
-    return operations_list[operation_id]
+    @staticmethod
+    def get_operation(operation_id):
+        return Operations.operations_list[operation_id]
 
-def rand_operation_id():
-    return random.randint(1,NUM_OPERATIONS)
+    @staticmethod
+    def rand_operation_id():
+        return random.randint(1,OperationTypes.NUM_OPERATIONS)
 
 
