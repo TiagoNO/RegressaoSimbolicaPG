@@ -3,23 +3,23 @@ import pickle
 
 class Logger:
 
-    def __init__(self,experiment_name="default"):
+    def __init__(self,experiment_name="default",config_file="default"):
         if not os.path.exists("logs/"):
             os.makedirs("logs/")
     
         i = 0
-        while os.path.isfile('logs/{}_population_{}.txt'.format(experiment_name,i)):
+        while os.path.isfile('logs/{}_{}_population_{}.txt'.format(experiment_name,config_file,i)):
             i += 1
-        self.population_file_name = 'logs/{}_population_{}.txt'.format(experiment_name,i)
+        self.population_file_name = 'logs/{}_{}_population_{}.txt'.format(experiment_name,config_file,i)
         i = 0
-        while os.path.isfile('logs/{}_fitness_{}.txt'.format(experiment_name,i)):
+        while os.path.isfile('logs/{}_{}_fitness_{}.txt'.format(experiment_name,config_file,i)):
             i += 1
-        self.fitness_file_name = 'logs/{}_fitness_{}.txt'.format(experiment_name,i)
+        self.fitness_file_name = 'logs/{}_{}_fitness_{}.txt'.format(experiment_name,config_file,i)
 
         i = 0
-        while os.path.isfile('logs/{}_population_recovery_{}.txt.negri'.format(experiment_name,i)):
+        while os.path.isfile('logs/{}_{}_population_recovery_{}.txt.negri'.format(experiment_name,config_file,i)):
             i += 1
-        self.population_recovery_file_name = 'logs/{}_population_recovery_{}.txt.negri'.format(experiment_name,i)
+        self.population_recovery_file_name = 'logs/{}_{}_population_recovery_{}.txt.negri'.format(experiment_name,config_file,i)
 
         self.population_file = open(self.population_file_name,"w")
         self.fitness_file = open(self.fitness_file_name,"w")
@@ -42,8 +42,8 @@ class Logger:
         self.fitness_file.write("generation_num {}\n".format(generation))
         fitness_str = ""
         for i in xrange(len(fitness)):
-            fitness_str += "{} {}\n".format(i,fitness)
-        self.fitness_file.write("fitness_values\n{}".format(fitness_str))
+            fitness_str += "{} {}\n".format(i,fitness[i])
+        self.fitness_file.write("fitness_values\n{}\n".format(fitness_str))
         self.fitness_file.write("end_fitness_values\n")
         self.fitness_file.write("------[end_generation {}]------\n".format(generation))
 
@@ -55,10 +55,15 @@ class Logger:
         print "======================\n"
         
     def write_population(self,population,generation):
-        self.population_file.write("---------- {} ----------")
+        self.population_file.write("---------- {} ----------\n")
         for i in xrange(len(population)):
-            self.population_file.write("{} ".format(i) + str(population[i]))           
-        self.population_file.write("-------------------------")
+            self.population_file.write("{} {}\n".format(i,str(population[i])))
+        self.population_file.write("-------------------------\n")
 
     def save_population(self,population):
         pickle.dump(population,self.population_recovery_file)
+
+    def close_files(self):
+        self.population_file.close()
+        self.fitness_file.close()
+        self.population_recovery_file.close()
