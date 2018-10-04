@@ -23,6 +23,6 @@ x_values = data.get_x_values()
 y_values = data.get_y_values()
 num_variables = data.get_num_variables()
 
-simbolic_genetics = genetics.Genetics(data_file.split("/")[-1])
+simbolic_genetics = genetics.Genetics(data_file,config_file)
 simbolic_genetics.generate_initial_population(len(x_values[0]))
 simbolic_genetics.run_genetic(x_values,y_values)
