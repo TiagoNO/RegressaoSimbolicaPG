@@ -1,0 +1,26 @@
+Para rodar o algorítmo, basta escrever o seguinte código no terminal
+
+    python main.py --config_file arquivo_de_configuracao --data_file arquivo_dos_dados
+    python main.py -cf arquivo_de_configuracao -df arquivo_dos_dados
+
+Qualquer um dos dois funcionará com os arquivos passados. Caso o arquivo de arquivo de
+configuração não for passado, ele irá utilizar um padrão definido em genetics/default_configuration.txt
+
+Para criar seu próprio arquivo de configuração, basta criar um arquivo de texto da seguinte forma:
+
+population_size xxxx
+num_generations xxxx
+max_tree_level xxxx
+mutation_rate xxxx
+tournament_group_size xxxx
+
+substituindo os valores de "xxxx" por algum valor desejado. Caso uma das informações não seja informada,
+o programa utilizará um valor padrão definido dentro de seu código fonte em genetics/Configuration.py
+
+
+Todos as informações úteis estarão impressas no terminal ( valores de cada geração )
+ou em um arquivo de log escrito em logs/, onde serão salvos, a população escrita em forma de função,
+um arquivo de recuperação que poderá ser utilizado para pegar a população de uma etapa do processo e ser usada em outro,
+e as fitness de cada geração!
+
+Divirta-se :)!
