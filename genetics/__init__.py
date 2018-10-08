@@ -57,7 +57,7 @@ class Genetics:
         self.population.update_population(Genetic_Operations.select_population(self.population.get_population(),self.last_fitness,x_values,y_values))
 
     def on_end(self,x_values,y_values):
-        self.last_fitness = self.get_population_fitness(x_values,y_values)
+        self.get_population_fitness(x_values,y_values)
         best_individual_index = 0
         for i in xrange(len(self.last_fitness)):
             if self.last_fitness[best_individual_index] > self.last_fitness[i]:
