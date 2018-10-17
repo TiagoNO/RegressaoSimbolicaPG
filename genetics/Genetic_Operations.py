@@ -100,10 +100,16 @@ class Genetic_Operations:
             mutation_chance = random.random()
             if mutation_chance <= Configuration.get_mutation_rate():
                 children = Genetic_Operations.get_mutated_children(i,x_values)
-                new_population += children
+                if Configuration.mutation_elitism:
+                    new_population += Genetic_Operations.compare_family(i,children,x_values,y_values)
+                else:
+                    new_population += children
             else:
                 children = Genetic_Operations.cross_over(i)
-                new_population += Genetic_Operations.compare_family(i,children,x_values,y_values)
+                if Configuration.cross_over_elitism:
+                    new_population += Genetic_Operations.compare_family(i,children,x_values,y_values)                    
+                else:
+                    new_population += children
         return new_population
 
     @staticmethod
