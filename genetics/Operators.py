@@ -2,17 +2,16 @@ import random
 import math
 
 class OperationTypes:
-    NUM_OPERATIONS = 4
+    NUM_OPERATIONS = 9
     SUM_OP = 0
     SUB_OP = 1
     MUL_OP = 2
     DIV_OP = 3
-#    LOG_OP = 4
-#    POW_OP = 5
-#    SQRT_OP = 6
-#    SIN_OP = 7
-#    COS_OP = 8
-#    ABS_OP = 9
+    SQRT_OP = 4
+    ABS_OP = 5
+    LOG_OP = 6
+    COS_OP = 7
+    SIN_OP = 8
 
 class Operation:
 
@@ -133,9 +132,9 @@ class Operation_abs ( Operation ):
 
 class Operations:
 
-    operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()]
-                    #,Operation_sqrt(),Operation_abs(),Operation_log(),Operation_cos()
-                    #,Operation_sin()]
+    operations_list = [Operation_sum(),Operation_sub(),Operation_mul(),Operation_div()
+                    ,Operation_sqrt(),Operation_abs(),Operation_log(),Operation_cos()
+                    ,Operation_sin()]
 
     @staticmethod
     def get_random_operation():
