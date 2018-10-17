@@ -11,14 +11,7 @@ class Genetics:
 
     def __init__(self,experiment_file_name,configuration_file_name="no_file"):
         Configuration.read_configuration_file(configuration_file_name)
-        print "====================="
-        print "Configurations:"
-        print "Population size: {}".format(Configuration.get_population_size())
-        print "Num generations: {}".format(Configuration.get_num_generations())
-        print "Max tree level:  {}".format(Configuration.get_max_tree_level())
-        print "Mutation rate:   {}".format(Configuration.get_mutation_rate())
-        print "Tournament size: {}".format(Configuration.get_tournament_group_size())
-        print "====================="
+        Configuration.print_config()
         self.log = Logger(experiment_file_name.split("/")[-1],configuration_file_name.split("/")[-1])
         self.last_fitness = None
         self.population = None
@@ -32,7 +25,10 @@ class Genetics:
         else:
             print "Trying to recover the population in file {}...".format(recover_population_file_name)
             self.population = Population(Configuration.population_size,num_variables,recover_population_file_name)
+            print self.population.get_population()[0]
 
+    def change_log_files(self,experiment_file_name,configuration_file_name="no_file"):
+        self.log = Logger(experiment_file_name.split("/")[-1],configuration_file_name.split("/")[-1])
 
     def get_population_fitness(self,x_values,y_values):
         self.last_fitness = self.population.eval_population(self.population.get_population(),x_values,y_values)
@@ -46,6 +42,7 @@ class Genetics:
                 self.get_population_fitness(x_values,y_values)
                 if i%20 == 0:
                     self.log.write_fitness(self.last_fitness,i)
+                    print "Current best function:\n",self.population.get_best_individual(self.last_fitness)
                     #self.log.write_population(self.population.get_population(),i)
                 self.do_population_selection(x_values,y_values)
 

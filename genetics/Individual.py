@@ -3,6 +3,7 @@ from Tree import NodeTypes,Tree_Operations
 import numpy as np
 import random
 import math
+import pickle
 
 class Population:
 
@@ -10,21 +11,29 @@ class Population:
         if recover_file_name == "no_file":
             self.population = self.generate_random_population(population_size,num_variables)
         else:
-            self.population = self.recover_population(recover_file_name)
+            try:
+                print "Recovering population...",
+                self.recover_population(open(recover_file_name,"rb"))
+                print "Population recovered!"
+            except:
+                print "ERROR: Could not recover population...Random population created..."
+                self.population = self.generate_random_population(population_size,num_variables)
 
     def recover_population(self,recover_file_name):
-        try:
-            print "Recovering population..."
-            return []
-        except:
-            print "ERROR: Could not recover population...Random population created..."
-            self.population
+        self.population = pickle.load(recover_file_name)
 
     def update_population(self,new_population):
         self.population = new_population
 
     def get_population(self):
         return self.population
+
+    def get_best_individual(self,fitness_values):
+        best_individual_index = 0
+        for i in xrange(len(fitness_values)):
+            if fitness_values[best_individual_index] > fitness_values[i]:
+                best_individual_index = i
+        return self.population[best_individual_index]
 
     @staticmethod
     def generate_random_individual(num_variables,full,initial_level=1,max_tree_level=Configuration.get_max_tree_level()):
