@@ -53,9 +53,9 @@ class Operation_node( Tree_node ):
 
     def __str__(self):
         if self.operation.get_num_op() == 1:
-            return "[{}]".format(self.level) + " " + self.operation.string_representation().format(str(self.left))
+            return self.operation.string_representation().format(str(self.left))
         else:
-            return "[{}]".format(self.level) + " " + self.operation.string_representation().format(str(self.left),str(self.right))
+            return self.operation.string_representation().format(str(self.left),str(self.right))
 
     def get_value(self,variable_values):
         left_value = 0.0
@@ -91,7 +91,7 @@ class Variable_node( Tree_node ):
         return 0.0
 
     def __str__(self):
-        return "[{}]".format(self.level)  + " " +  "x" + str(self.num_variable)
+        return "x" + str(self.num_variable)
 
     def get_value(self,variables_values):
         return variables_values[self.num_variable - 1]
@@ -115,7 +115,7 @@ class Const_node( Tree_node ):
         return 0.0
 
     def __str__(self):
-        return "[{}]".format(self.level) + " " + str(self.value)
+        return str(self.value)
 
     def get_value(self,variable_values):
         return self.value
