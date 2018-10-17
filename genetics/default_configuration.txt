@@ -3,3 +3,5 @@ num_generations 500
 max_tree_level 7
 mutation_rate 0.1
 tournament_group_size 6
+mutation_elitism False
+cross_over_elitism True
